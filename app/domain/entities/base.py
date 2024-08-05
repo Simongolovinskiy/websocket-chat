@@ -1,7 +1,10 @@
+from typing import List
 from uuid import uuid4
 from datetime import datetime
 from abc import ABC
 from dataclasses import dataclass, field
+
+from app.domain.events.base import BaseEvent
 
 
 @dataclass(eq=False)
@@ -14,6 +17,17 @@ class BaseEntity(ABC):
         default_factory=lambda: datetime.now(),
         kw_only=True
     )
+    _events: List[BaseEvent] = field(
+        default_factory=list,
+        kw_only=True)
+
+    def pull_events(self) -> List[BaseEvent]:
+        registered_events = self._events.copy()
+        self._events.clear()
+        return registered_events
+
+    def register_event(self, event: BaseEvent) -> None:
+        self._events.append(event)
 
     def __hash__(self) -> int:
         return hash(self.oid)

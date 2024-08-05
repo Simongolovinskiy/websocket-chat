@@ -2,9 +2,10 @@ import pytest
 
 from datetime import datetime
 
-from app.domain.entities.messages import Message, Chat
-from app.domain.exceptions.messages import TitleTooLongException
 from app.domain.values.messages import Text, Title
+from app.domain.entities.messages import Message, Chat
+from app.domain.events.messages import NewMessageReceivedEvent
+from app.domain.exceptions.messages import TitleTooLongException
 
 
 def test_create_message_success_short_text():
@@ -45,3 +46,25 @@ def test_add_message_to_chat_success():
 
     assert chat.messages
     assert message in chat.messages
+
+
+def test_message_events():
+    text = Text("Hello! My name is Alex!")
+    message = Message(text=text)
+
+    title = Title("Hello world")
+    chat = Chat(title=title)
+
+    chat.add_message(message)
+    events = chat.pull_events()
+    pulled_events = chat.pull_events()
+
+    assert len(events) == 1
+    assert not pulled_events, pulled_events
+
+    current_event = events[0]
+
+    assert isinstance(current_event, NewMessageReceivedEvent)
+    assert current_event.message_oid == message.oid
+    assert current_event.chat_oid == chat.oid
+    assert current_event.message_text == message.text.as_generic_type()
