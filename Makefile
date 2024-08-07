@@ -2,7 +2,7 @@ DC = docker-compose
 EXEC = docker exec -it
 LOGS = docker logs
 ENV = --env-file .env
-APP_FILE = docker-compose/app.yaml
+APP_FILE = docker/app.yaml
 APP_CONTAINER = main-app
 
 .PHONY: app

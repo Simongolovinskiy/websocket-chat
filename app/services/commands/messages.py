@@ -26,4 +26,3 @@ class CreateChatCommandHandler(CommandHandler[CreateChatCommand, Chat]):
         await self.chat_repository.add_chat(new_chat)
 
         return new_chat
-

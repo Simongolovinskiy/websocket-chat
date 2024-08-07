@@ -5,23 +5,29 @@ from dataclasses import dataclass, field
 from app.domain.events.base import BaseEvent
 from app.services.events.base import EventHandler, ER, ET
 from app.services.commands.base import CommandHandler, CR, CT
-from app.services.exceptions.mediator import EventHandlersNotRegistered, CommandHandlersNotRegistered
+from app.services.exceptions.mediator import (
+    EventHandlersNotRegistered,
+    CommandHandlersNotRegistered,
+)
 
 
 @dataclass(eq=False)
 class Mediator:
     events_map: Dict[ET, EventHandler] = field(
-        default_factory=lambda: defaultdict(list),
-        kw_only=True)
+        default_factory=lambda: defaultdict(list), kw_only=True
+    )
     commands_map: Dict[CT, CommandHandler] = field(
-        default_factory=lambda: defaultdict(list),
-        kw_only=True
+        default_factory=lambda: defaultdict(list), kw_only=True
     )
 
-    def register_event(self, event: ET, event_handlers: Iterable[EventHandler[ET, ER]]) -> None:
+    def register_event(
+        self, event: ET, event_handlers: Iterable[EventHandler[ET, ER]]
+    ) -> None:
         self.events_map[event].extend(event_handlers)
 
-    def register_command(self, command: CT, command_handlers: Iterable[CommandHandler[CT, CR]]) -> None:
+    def register_command(
+        self, command: CT, command_handlers: Iterable[CommandHandler[CT, CR]]
+    ) -> None:
         self.commands_map[command].extend(command_handlers)
 
     async def handle_event(self, event: BaseEvent) -> Iterable[ER]:

@@ -15,4 +15,3 @@ class NewMessageReceivedEvent(BaseEvent):
 class NewChatCreated(BaseEvent):
     chat_oid: str
     chat_title: str
-
