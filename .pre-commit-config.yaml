@@ -1,0 +1,18 @@
+repos:
+  - repo: local
+    hooks:
+      - id: isort
+        name: isort
+        entry: isort --settings-file settings/.isort.cfg .
+        language: system
+        types: [ python ]
+        pass_filenames: false
+
+  - repo: local
+    hooks:
+      - id: black
+        name: black
+        entry: black --config settings/.black .
+        language: system
+        types: [ python ]
+        pass_filenames: false
