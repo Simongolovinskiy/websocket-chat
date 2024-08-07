@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from typing import TypeVar, Generic, Any
+from typing import Any, Generic, TypeVar
 
 from app.domain.events.base import BaseEvent
 

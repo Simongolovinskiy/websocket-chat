@@ -1,30 +1,30 @@
 import pytest
-
-from faker import Faker
-
 from app.domain.entities.messages import Chat
 from app.domain.values.messages import Title
-from app.services.commands.messages import CreateChatCommand
-from app.services.exceptions.messages import ChatWithThatTitleAlreadyExistsException
-from app.services.mediator import Mediator
 from app.infrastructure.repositories.messages import BaseChatRepository
+from app.services.commands.messages import CreateChatCommand
+from app.services.exceptions.messages import (
+    ChatWithThatTitleAlreadyExistsException,
+)
+from app.services.mediator import Mediator
+from faker import Faker
 
 
 @pytest.mark.asyncio
 async def test_create_chat_command_success(
-    chat_repository: BaseChatRepository,
-    mediator: Mediator,
-    faker: Faker
+    chat_repository: BaseChatRepository, mediator: Mediator, faker: Faker
 ):
-    chat, *_ = await mediator.handle_command(CreateChatCommand(title=faker.text()))
-    assert await chat_repository.check_chat_exists_by_title(title=chat.title.as_generic_type())
+    chat, *_ = await mediator.handle_command(
+        CreateChatCommand(title=faker.text())
+    )
+    assert await chat_repository.check_chat_exists_by_title(
+        title=chat.title.as_generic_type()
+    )
 
 
 @pytest.mark.asyncio
 async def test_create_chat_command_title_already_exists(
-    chat_repository: BaseChatRepository,
-    mediator: Mediator,
-    faker: Faker
+    chat_repository: BaseChatRepository, mediator: Mediator, faker: Faker
 ):
     title_text = faker.text()
     chat = Chat(Title(title_text))

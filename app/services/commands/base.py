@@ -1,11 +1,10 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from typing import TypeVar, Generic, Any
+from typing import Any, Generic, TypeVar
 
 
 @dataclass(frozen=True, eq=False)
-class BaseCommand(ABC):
-    ...
+class BaseCommand(ABC): ...
 
 
 CT = TypeVar("CT", bound=BaseCommand)

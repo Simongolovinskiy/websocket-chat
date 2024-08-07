@@ -1,13 +1,15 @@
 from functools import lru_cache
 
-from punq import Container, Scope
-
 from app.infrastructure.repositories.messages import (
-    MemoryChatRepository,
     BaseChatRepository,
+    MemoryChatRepository,
 )
-from app.services.commands.messages import CreateChatCommand, CreateChatCommandHandler
+from app.services.commands.messages import (
+    CreateChatCommand,
+    CreateChatCommandHandler,
+)
 from app.services.mediator import Mediator
+from punq import Container, Scope
 
 
 @lru_cache(1)
@@ -17,14 +19,15 @@ def init_container() -> Container:
 
 def _init_container() -> Container:
     container = Container()
-    container.register(BaseChatRepository, MemoryChatRepository, scope=Scope.singleton)
+    container.register(
+        BaseChatRepository, MemoryChatRepository, scope=Scope.singleton
+    )
     container.register(CreateChatCommandHandler)
 
     def init_mediator() -> Mediator:
         mediator = Mediator()
         mediator.register_command(
-            CreateChatCommand,
-            [container.resolve(CreateChatCommandHandler)]
+            CreateChatCommand, [container.resolve(CreateChatCommandHandler)]
         )
         return mediator
 

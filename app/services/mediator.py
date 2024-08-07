@@ -1,13 +1,13 @@
-from typing import Dict, Iterable
 from collections import defaultdict
 from dataclasses import dataclass, field
+from typing import Dict, Iterable
 
 from app.domain.events.base import BaseEvent
-from app.services.events.base import EventHandler, ER, ET
-from app.services.commands.base import CommandHandler, CR, CT
+from app.services.commands.base import CR, CT, CommandHandler
+from app.services.events.base import ER, ET, EventHandler
 from app.services.exceptions.mediator import (
-    EventHandlersNotRegistered,
     CommandHandlersNotRegistered,
+    EventHandlersNotRegistered,
 )
 
 

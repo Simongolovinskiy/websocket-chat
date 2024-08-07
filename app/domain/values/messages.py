@@ -1,6 +1,7 @@
 from dataclasses import dataclass
+
+from ..exceptions.messages import EmptyTextException, TitleTooLongException
 from .base import BaseValueObject
-from ..exceptions.messages import TitleTooLongException, EmptyTextException
 
 
 @dataclass(frozen=True)

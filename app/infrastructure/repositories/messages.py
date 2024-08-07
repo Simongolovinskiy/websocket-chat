@@ -1,6 +1,6 @@
-from typing import List
+from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
-from abc import abstractmethod, ABC
+from typing import List
 
 from app.domain.entities.messages import Chat
 

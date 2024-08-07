@@ -1,1 +1,1 @@
-from tests.services.conftest import *  #noqa
+from tests.services.conftest import *  # noqa

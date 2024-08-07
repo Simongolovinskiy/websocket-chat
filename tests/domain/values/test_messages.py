@@ -1,11 +1,10 @@
-import pytest
-
 from datetime import datetime
 
-from app.domain.values.messages import Text, Title
-from app.domain.entities.messages import Message, Chat
+import pytest
+from app.domain.entities.messages import Chat, Message
 from app.domain.events.messages import NewMessageReceivedEvent
 from app.domain.exceptions.messages import TitleTooLongException
+from app.domain.values.messages import Text, Title
 
 
 def test_create_message_success_short_text():

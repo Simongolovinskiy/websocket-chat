@@ -1,6 +1,5 @@
-from fastapi import FastAPI
-
 from app.application.api.messages.handlers import router as message_router
+from fastapi import FastAPI
 
 
 def create_app() -> FastAPI:
@@ -13,4 +12,3 @@ def create_app() -> FastAPI:
 
     app.include_router(message_router, prefix="/chat")
     return app
-
