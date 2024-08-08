@@ -9,6 +9,7 @@ from app.services.exceptions.mediator import (
     CommandHandlersNotRegistered,
     EventHandlersNotRegistered,
 )
+from app.services.queries.base import QT, QueryHandler, QR
 
 
 @dataclass(eq=False)
@@ -20,6 +21,10 @@ class Mediator:
         default_factory=lambda: defaultdict(list), kw_only=True
     )
 
+    queries_map: Dict[QT, QueryHandler] = field(
+        default_factory=dict, kw_only=True
+    )
+
     def register_event(
         self, event: ET, event_handlers: Iterable[EventHandler[ET, ER]]
     ) -> None:
@@ -29,6 +34,11 @@ class Mediator:
         self, command: CT, command_handlers: Iterable[CommandHandler[CT, CR]]
     ) -> None:
         self.commands_map[command].extend(command_handlers)
+
+    def register_query(
+        self, query: QT, query_handler: QueryHandler[QT, QR]
+    ) -> None:
+        self.queries_map[query] = query_handler
 
     async def publish(self, events: Iterable[BaseEvent]) -> Iterable[ER]:
         result = list()
@@ -49,3 +59,6 @@ class Mediator:
             raise CommandHandlersNotRegistered(command_type)
 
         return [await handler.handle(command) for handler in handlers]
+
+    async def handle_query(self, query: QT) -> QR:
+        return await self.queries_map[query.__class__].handle(query)

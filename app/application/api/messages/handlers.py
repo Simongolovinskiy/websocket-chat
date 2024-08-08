@@ -7,6 +7,7 @@ from app.application.api.messages.schemas import (
     CreateChatResponseSchema,
     CreateMessageRequestSchema,
     CreateMessageResponseSchema,
+    ChatDetailSchema,
 )
 from app.application.api.schemas import ErrorSchema
 from app.domain.exceptions.base import ApplicationException
@@ -16,6 +17,7 @@ from app.services.commands.messages import (
 )
 from app.services.init import init_container
 from app.services.mediator import Mediator
+from app.services.queries.messages import GetChatDetailQuery
 
 router = APIRouter(tags=["Chat"])
 
@@ -76,3 +78,28 @@ async def create_message_handler(
             detail={"error": exception.message},
         )
     return CreateMessageResponseSchema.from_entity(message)
+
+
+@router.get(
+    "/{chat_oid}/",
+    status_code=status.HTTP_200_OK,
+    description="getting all messages in current chat.",
+    responses={
+        status.HTTP_200_OK: {"model": ChatDetailSchema},
+        status.HTTP_404_NOT_FOUND: {"model": ErrorSchema},
+    },
+)
+async def fetch_chat_with_messages_handler(
+    chat_oid: str, container: Container = Depends(init_container)
+) -> ChatDetailSchema:
+    mediator: Mediator = container.resolve(Mediator)
+    try:
+        chat = await mediator.handle_query(
+            GetChatDetailQuery(chat_oid=chat_oid)
+        )
+    except ApplicationException as exception:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail={"error": exception.message},
+        )
+    return ChatDetailSchema.from_entity(chat)

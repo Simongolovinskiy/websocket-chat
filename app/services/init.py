@@ -18,6 +18,10 @@ from app.services.commands.messages import (
     CreateMessageCommandHandler,
 )
 from app.services.mediator import Mediator
+from app.services.queries.messages import (
+    GetChatDetailQuery,
+    GetChatDetailQueryHandler,
+)
 from app.settings.conf import Config
 
 
@@ -31,6 +35,7 @@ def _init_container() -> Container:
     container.register(Config, instance=Config(), scope=Scope.singleton)
     container.register(CreateChatCommandHandler)
     container.register(CreateMessageCommandHandler)
+    container.register(GetChatDetailQueryHandler)
 
     def create_mongodb_client():
         return AsyncIOMotorClient(
@@ -54,6 +59,9 @@ def _init_container() -> Container:
         mediator.register_command(
             CreateMessageCommand,
             [container.resolve(CreateMessageCommandHandler)],
+        )
+        mediator.register_query(
+            GetChatDetailQuery, container.resolve(GetChatDetailQueryHandler)
         )
         return mediator
 
