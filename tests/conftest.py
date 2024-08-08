@@ -1,7 +1,8 @@
-from app.infrastructure.repositories.messages import BaseChatRepository
-from app.services.mediator import Mediator
 from punq import Container
 from pytest import fixture
+
+from app.infrastructure.repositories.messages.base import BaseChatRepository
+from app.services.mediator import Mediator
 from tests.fixtures import init_test_container
 
 

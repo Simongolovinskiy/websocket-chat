@@ -1,6 +1,7 @@
 from datetime import datetime
 
 import pytest
+
 from app.domain.entities.messages import Chat, Message
 from app.domain.events.messages import NewMessageReceivedEvent
 from app.domain.exceptions.messages import TitleTooLongException

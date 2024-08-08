@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 from app.domain.entities.messages import Chat
 from app.domain.values.messages import Title
-from app.infrastructure.repositories.messages import BaseChatRepository
+from app.infrastructure.repositories.messages.base import BaseChatRepository
 from app.services.commands.base import BaseCommand, CommandHandler
 from app.services.exceptions.messages import (
     ChatWithThatTitleAlreadyExistsException,

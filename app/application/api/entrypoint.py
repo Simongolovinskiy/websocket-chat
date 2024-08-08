@@ -1,5 +1,6 @@
-from app.application.api.messages.handlers import router as message_router
 from fastapi import FastAPI
+
+from app.application.api.messages.handlers import router as message_router
 
 
 def create_app() -> FastAPI:

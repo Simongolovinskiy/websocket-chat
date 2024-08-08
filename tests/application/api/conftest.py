@@ -1,8 +1,9 @@
-from app.application.api.entrypoint import create_app
-from app.services.init import init_container
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 from pytest import fixture
+
+from app.application.api.entrypoint import create_app
+from app.services.init import init_container
 from tests.fixtures import init_test_container
 
 

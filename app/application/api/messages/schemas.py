@@ -1,5 +1,6 @@
-from app.domain.entities.messages import Chat
 from pydantic import BaseModel
+
+from app.domain.entities.messages import Chat
 
 
 class CreateChatRequestSchema(BaseModel):

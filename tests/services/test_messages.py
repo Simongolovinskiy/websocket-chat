@@ -1,13 +1,14 @@
 import pytest
+from faker import Faker
+
 from app.domain.entities.messages import Chat
 from app.domain.values.messages import Title
-from app.infrastructure.repositories.messages import BaseChatRepository
+from app.infrastructure.repositories.messages.base import BaseChatRepository
 from app.services.commands.messages import CreateChatCommand
 from app.services.exceptions.messages import (
     ChatWithThatTitleAlreadyExistsException,
 )
 from app.services.mediator import Mediator
-from faker import Faker
 
 
 @pytest.mark.asyncio

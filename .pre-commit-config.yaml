@@ -5,23 +5,20 @@ repos:
         name: black
         entry: black --config settings/.black .
         language: system
-        types: [ python ]
+        types: [python]
         pass_filenames: false
-  - repo: local
-    hooks:
-      - id: isort
-        name: isort
-        entry: isort --settings-file settings/.isort.cfg .
+      - id: autoflake
+        name: autoflake
+        entry: autoflake --in-place --remove-unused-variables --remove-all-unused-imports -r .
         language: system
-        types: [ python ]
+        types: [python]
         pass_filenames: false
-        args: [ "--profile", "black" ]
 
   - repo: local
     hooks:
       - id: pytest
         name: pytest
-        entry: pytest
+        entry: make test
         language: system
         types: [ python ]
         pass_filenames: false

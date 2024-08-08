@@ -4,7 +4,6 @@ from typing import Any, Generic, TypeVar
 
 from app.domain.events.base import BaseEvent
 
-
 ET = TypeVar("ET", bound=BaseEvent)
 ER = TypeVar("ER", bound=Any)
 

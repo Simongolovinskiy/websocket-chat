@@ -1,0 +1,36 @@
+version: "3.10"
+
+services:
+  mongodb:
+    container_name: chat-db
+    image: mongo:6-jammy
+    ports:
+      - "27017:27017"
+
+    volumes:
+      - "dbdata6:/data/db"
+    networks:
+      - backend
+
+  mongo-express:
+    image: mongo-express
+    container_name: mongo-express
+    restart: always
+    ports:
+    - "28081:8081"
+    environment:
+      ME_CONFIG_MONGODB_SERVER: mongodb
+      ME_CONFIG_BASICAUTH_USERNAME: ${MONGODB_USERNAME}
+      ME_CONFIG_BASICAUTH_PASSWORD: ${MONGODB_PASSWORD}
+      ME_CONFIG_MONGODB_URL: mongodb://mongodb:27017/
+    depends_on:
+      - mongodb
+    networks:
+      - backend
+
+volumes:
+  dbdata6:
+
+networks:
+  backend:
+    driver: bridge

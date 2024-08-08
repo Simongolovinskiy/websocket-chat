@@ -1,3 +1,7 @@
+from fastapi import Depends, HTTPException, status
+from fastapi.routing import APIRouter
+from punq import Container
+
 from app.application.api.messages.schemas import (
     CreateChatRequestSchema,
     CreateChatResponseSchema,
@@ -7,10 +11,6 @@ from app.domain.exceptions.base import ApplicationException
 from app.services.commands.messages import CreateChatCommand
 from app.services.init import init_container
 from app.services.mediator import Mediator
-from fastapi import Depends, HTTPException, status
-from fastapi.routing import APIRouter
-from punq import Container
-
 
 router = APIRouter(tags=["Chat"])
 

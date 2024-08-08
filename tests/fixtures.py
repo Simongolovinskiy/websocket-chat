@@ -1,9 +1,10 @@
-from app.infrastructure.repositories.messages import (
-    BaseChatRepository,
+from punq import Container, Scope
+
+from app.infrastructure.repositories.messages.base import BaseChatRepository
+from app.infrastructure.repositories.messages.memory import (
     MemoryChatRepository,
 )
 from app.services.init import _init_container
-from punq import Container, Scope
 
 
 def init_test_container() -> Container:

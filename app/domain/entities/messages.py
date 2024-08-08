@@ -5,16 +5,14 @@ from app.domain.events.messages import NewChatCreated, NewMessageReceivedEvent
 from app.domain.values.messages import Text, Title
 
 
-@dataclass
+@dataclass(eq=False)
 class Message(BaseEntity):
     text: Text
-    __hash__ = BaseEntity.__hash__
 
 
-@dataclass
+@dataclass(eq=False)
 class Chat(BaseEntity):
     title: Title
-    __hash__ = BaseEntity.__hash__
     messages: set[Message] = field(default_factory=set, kw_only=True)
 
     @classmethod

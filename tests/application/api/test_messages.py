@@ -1,4 +1,3 @@
-import pytest
 from faker import Faker
 from fastapi import FastAPI
 from httpx import Response

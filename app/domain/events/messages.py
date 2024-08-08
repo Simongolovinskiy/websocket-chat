@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 
 from app.domain.events.base import BaseEvent
-from app.domain.values.messages import Text
 
 
 @dataclass
