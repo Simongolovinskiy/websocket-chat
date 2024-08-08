@@ -1,9 +1,11 @@
 from abc import ABC
 from dataclasses import dataclass
+from typing import Iterable, Tuple
 
 from motor.core import AgnosticClient
 
 from app.domain.entities.messages import Chat, Message
+from app.infrastructure.filters.messages import GetMessageFilters
 from app.infrastructure.repositories.messages.base import (
     BaseChatsRepository,
     BaseMessagesRepository,
@@ -12,6 +14,7 @@ from app.infrastructure.repositories.messages.converters import (
     convert_entity_to_document,
     convert_message_to_document,
     convert_document_to_entity,
+    convert_message_document_to_entity,
 )
 
 
@@ -47,8 +50,25 @@ class MongoDBChatsRepository(BaseChatsRepository, BaseMongoDBRepository):
 @dataclass
 class MongoDBMessagesRepository(BaseMessagesRepository, BaseMongoDBRepository):
 
-    async def add_message(self, chat_oid: str, message: Message) -> None:
-        await self._collection.update_one(
-            {"oid": chat_oid},
-            {"$push": {"messages": convert_message_to_document(message)}},
+    async def add_message(self, message: Message) -> None:
+        await self._collection.insert_one(
+            document=convert_message_to_document(message)
         )
+
+    async def fetch_messages(
+        self, chat_oid: str, filters: GetMessageFilters
+    ) -> Tuple[Iterable[Message], int]:
+        find = {"chat_oid": chat_oid}
+        cursor = (
+            self._collection.find(find)
+            .skip(filters.offset)
+            .limit(filters.limit)
+        )
+        count = self._collection.count_documents(filter=find)
+        messages = [
+            convert_message_document_to_entity(
+                message_document=message_document
+            )
+            async for message_document in cursor
+        ]
+        return messages, count

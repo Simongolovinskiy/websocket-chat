@@ -1,4 +1,5 @@
 from datetime import datetime
+from uuid import uuid4
 
 import pytest
 
@@ -10,14 +11,14 @@ from app.domain.values.messages import Text, Title
 
 def test_create_message_success_short_text():
     text = Text("Hello! My name is Alex!")
-    message = Message(text=text)
+    message = Message(text=text, chat_oid=str(uuid4()))
     assert message.text == text
     assert message.created_at.date() == datetime.today().date()
 
 
 def test_create_message_success_long_text():
     text = Text("Hello! " * 300)
-    message = Message(text=text)
+    message = Message(text=text, chat_oid=str(uuid4()))
     assert message.text == text
     assert message.created_at.date() == datetime.today().date()
 
@@ -37,7 +38,7 @@ def test_create_chat_failure_with_long_title():
 
 def test_add_message_to_chat_success():
     text = Text("Hello! My name is Alex!")
-    message = Message(text=text)
+    message = Message(text=text, chat_oid=str(uuid4()))
 
     title = Title("Hello world")
     chat = Chat(title=title)
@@ -50,7 +51,7 @@ def test_add_message_to_chat_success():
 
 def test_message_events():
     text = Text("Hello! My name is Alex!")
-    message = Message(text=text)
+    message = Message(text=text, chat_oid=str(uuid4()))
 
     title = Title("Hello world")
     chat = Chat(title=title)

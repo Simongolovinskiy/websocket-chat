@@ -1,7 +1,9 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
+from typing import Iterable, Tuple
 
 from app.domain.entities.messages import Chat, Message
+from app.infrastructure.filters.messages import GetMessageFilters
 
 
 @dataclass
@@ -19,4 +21,9 @@ class BaseChatsRepository(ABC):
 @dataclass
 class BaseMessagesRepository(ABC):
     @abstractmethod
-    async def add_message(self, chat_oid: str, message: Message) -> None: ...
+    async def add_message(self, message: Message) -> None: ...
+
+    @abstractmethod
+    async def fetch_messages(
+        self, chat_oid: str, filters: GetMessageFilters
+    ) -> Tuple[Iterable[Message], int]: ...
