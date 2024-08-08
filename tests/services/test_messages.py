@@ -3,7 +3,7 @@ from faker import Faker
 
 from app.domain.entities.messages import Chat
 from app.domain.values.messages import Title
-from app.infrastructure.repositories.messages.base import BaseChatRepository
+from app.infrastructure.repositories.messages.base import BaseChatsRepository
 from app.services.commands.messages import CreateChatCommand
 from app.services.exceptions.messages import (
     ChatWithThatTitleAlreadyExistsException,
@@ -13,7 +13,7 @@ from app.services.mediator import Mediator
 
 @pytest.mark.asyncio
 async def test_create_chat_command_success(
-    chat_repository: BaseChatRepository, mediator: Mediator, faker: Faker
+    chat_repository: BaseChatsRepository, mediator: Mediator, faker: Faker
 ):
     chat, *_ = await mediator.handle_command(
         CreateChatCommand(title=faker.text())
@@ -25,7 +25,7 @@ async def test_create_chat_command_success(
 
 @pytest.mark.asyncio
 async def test_create_chat_command_title_already_exists(
-    chat_repository: BaseChatRepository, mediator: Mediator, faker: Faker
+    chat_repository: BaseChatsRepository, mediator: Mediator, faker: Faker
 ):
     title_text = faker.text()
     chat = Chat(Title(title_text))

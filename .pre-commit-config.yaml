@@ -3,7 +3,7 @@ repos:
     hooks:
       - id: black
         name: black
-        entry: black --config settings/.black .
+        entry: black --config app/settings/.black .
         language: system
         types: [python]
         pass_filenames: false
