@@ -135,11 +135,12 @@ async def fetch_chat_messages_handler(
             status_code=status.HTTP_404_NOT_FOUND,
             detail={"error": exception.message},
         )
+
     return GetMessagesQueryResponseSchema(
         count=count,
         limit=filters.limit,
         offset=filters.offset,
-        messages=[
+        items=[
             MessageDetailSchema.from_entity(message) for message in messages
         ],
     )

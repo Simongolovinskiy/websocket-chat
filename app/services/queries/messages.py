@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Iterable
+from typing import Iterable, Tuple
 
 from app.domain.entities.messages import Chat, Message
 from app.infrastructure.filters.messages import GetMessageFilters
@@ -39,7 +39,10 @@ class GetChatDetailQueryHandler(QueryHandler):
 class GetMessagesQueryHandler(QueryHandler):
     messages_repository: BaseMessagesRepository
 
-    async def handle(self, query: GetMessagesQuery) -> Iterable[Message]:
+    async def handle(
+        self, query: GetMessagesQuery
+    ) -> Tuple[Iterable[Message], int]:
         return await self.messages_repository.fetch_messages(
-            chat_oid=query.chat_oid, filters=query.filters
+            chat_oid=query.chat_oid,
+            filters=query.filters,
         )

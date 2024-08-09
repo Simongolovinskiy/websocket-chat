@@ -1,6 +1,6 @@
 from abc import ABC
 from dataclasses import dataclass
-from typing import Iterable, Tuple
+from typing import Iterable
 
 from motor.core import AgnosticClient
 
@@ -57,18 +57,20 @@ class MongoDBMessagesRepository(BaseMessagesRepository, BaseMongoDBRepository):
 
     async def fetch_messages(
         self, chat_oid: str, filters: GetMessageFilters
-    ) -> Tuple[Iterable[Message], int]:
+    ) -> tuple[Iterable[Message], int]:
         find = {"chat_oid": chat_oid}
         cursor = (
             self._collection.find(find)
             .skip(filters.offset)
             .limit(filters.limit)
         )
-        count = self._collection.count_documents(filter=find)
+
         messages = [
             convert_message_document_to_entity(
                 message_document=message_document
             )
             async for message_document in cursor
         ]
+        count = await self._collection.count_documents(filter=find)
+
         return messages, count
