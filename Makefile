@@ -5,10 +5,20 @@ ENV = --env-file .env
 APP_FILE = docker/app.yaml
 APP_CONTAINER = main-app
 STORAGE = docker/storages.yaml
+MESSAGING = docker/messaging.yaml
+MESSAGE_CONTAINER = main-zookeeper
 
 .PHONY: app
 app:
 	${DC} -f ${APP_FILE} ${ENV} up --build -d
+
+.PHONY: message
+message:
+	${DC} -f ${MESSAGING} ${ENV} up --build -d
+
+.PHONY: message-logs
+message-logs:
+	${DC} -f ${MESSAGING} logs -f
 
 .PHONY: storages
 storages:
@@ -17,6 +27,10 @@ storages:
 .PHONY: app-down
 app-down:
 	${DC} -f ${APP_FILE} down
+
+.PHONY: message-down
+message-down:
+	${DC} -f ${MESSAGING} down
 
 .PHONY: storages-down
 storages-down:
@@ -42,4 +56,4 @@ endif
 
 .PHONY: all
 all:
-	${DC} -f ${STORAGE} -f ${APP_FILE} ${ENV} up --build -d
+	${DC} -f ${STORAGE} -f ${APP_FILE} -f ${MESSAGING} ${ENV} up --build -d

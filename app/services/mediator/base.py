@@ -1,30 +1,20 @@
-from collections import defaultdict
-from dataclasses import dataclass, field
-from typing import Dict, Iterable
+from dataclasses import dataclass
+from typing import Iterable
 
 from app.domain.events.base import BaseEvent
 from app.services.commands.base import CR, CT, CommandHandler
 from app.services.events.base import ER, ET, EventHandler
 from app.services.exceptions.mediator import (
     CommandHandlersNotRegistered,
-    EventHandlersNotRegistered,
 )
+from app.services.mediator.command import CommandMediator
+from app.services.mediator.event import EventMediator
+from app.services.mediator.query import QueryMediator
 from app.services.queries.base import QT, QueryHandler, QR
 
 
 @dataclass(eq=False)
-class Mediator:
-    events_map: Dict[ET, EventHandler] = field(
-        default_factory=lambda: defaultdict(list), kw_only=True
-    )
-    commands_map: Dict[CT, CommandHandler] = field(
-        default_factory=lambda: defaultdict(list), kw_only=True
-    )
-
-    queries_map: Dict[QT, QueryHandler] = field(
-        default_factory=dict, kw_only=True
-    )
-
+class Mediator(EventMediator, CommandMediator, QueryMediator):
     def register_event(
         self, event: ET, event_handlers: Iterable[EventHandler[ET, ER]]
     ) -> None:
@@ -42,14 +32,14 @@ class Mediator:
 
     async def publish(self, events: Iterable[BaseEvent]) -> Iterable[ER]:
         result = list()
-        event_type = events.__class__
-        handlers = self.events_map.get(event_type)
-        if not handlers:
-            raise EventHandlersNotRegistered(event_type)
+
         for event in events:
-            result.extend(
-                [await handler.handle(event) for handler in handlers]
-            )
+            handlers: Iterable[EventHandler] = self.events_map[event.__class__]
+
+            for handler in handlers:
+                result.append([await handler.handle(event=event)])
+
+            # result.extend([await handler.handle(event) for handler in handlers])
         return result
 
     async def handle_command(self, command: CT) -> Iterable[CR]:

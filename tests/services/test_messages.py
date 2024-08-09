@@ -8,7 +8,7 @@ from app.services.commands.messages import CreateChatCommand
 from app.services.exceptions.messages import (
     ChatWithThatTitleAlreadyExistsException,
 )
-from app.services.mediator import Mediator
+from app.services.mediator.base import Mediator
 
 
 @pytest.mark.asyncio

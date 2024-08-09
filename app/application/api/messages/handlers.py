@@ -19,7 +19,7 @@ from app.services.commands.messages import (
     CreateMessageCommand,
 )
 from app.services.init import init_container
-from app.services.mediator import Mediator
+from app.services.mediator.base import Mediator
 from app.services.queries.messages import GetChatDetailQuery, GetMessagesQuery
 
 router = APIRouter(tags=["Chat"])

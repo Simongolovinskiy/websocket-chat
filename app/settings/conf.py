@@ -15,3 +15,5 @@ class Config(BaseSettings):
     mongodb_messages_collection_name: str = Field(
         default="messages", alias="MONGODB_MESSAGES_COLLECTION"
     )
+    new_chats_event_topic: str = Field(default="new-chats-topic")
+    broker_url: str = Field(alias="BROKER_URL")

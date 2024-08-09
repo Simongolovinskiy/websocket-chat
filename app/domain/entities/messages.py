@@ -1,7 +1,10 @@
 from dataclasses import dataclass, field
 
 from app.domain.entities.base import BaseEntity
-from app.domain.events.messages import NewChatCreated, NewMessageReceivedEvent
+from app.domain.events.messages import (
+    NewChatCreatedEvent,
+    NewMessageReceivedEvent,
+)
 from app.domain.values.messages import Text, Title
 
 
@@ -20,7 +23,7 @@ class Chat(BaseEntity):
     def create_chat(cls, title: Title) -> "Chat":
         new_chat = cls(title=title)
         new_chat.register_event(
-            event=NewChatCreated(
+            event=NewChatCreatedEvent(
                 chat_oid=new_chat.oid,
                 chat_title=new_chat.title.as_generic_type(),
             )
