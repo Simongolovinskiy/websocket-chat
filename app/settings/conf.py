@@ -17,3 +17,4 @@ class Config(BaseSettings):
     )
     new_chats_event_topic: str = Field(default="new-chats-topic")
     broker_url: str = Field(alias="BROKER_URL")
+    new_message_received_event_topic: str = Field(default="new-message-topic")
