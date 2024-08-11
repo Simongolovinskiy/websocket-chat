@@ -42,6 +42,8 @@ services:
     links:
       - kafka
       - zookeeper
+    depends_on:
+      - kafka
     networks:
       - backend
 
