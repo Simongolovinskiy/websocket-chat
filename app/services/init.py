@@ -1,6 +1,6 @@
 from functools import lru_cache
 
-from aiokafka import AIOKafkaProducer
+from aiokafka import AIOKafkaProducer, AIOKafkaConsumer
 from motor.motor_asyncio import AsyncIOMotorClient
 from punq import Container, Scope
 
@@ -55,7 +55,10 @@ def _init_container() -> Container:
 
     def create_message_broker() -> BaseMessageBroker:
         return KafkaMessageBroker(
-            producer=AIOKafkaProducer(bootstrap_servers=config.broker_url)
+            producer=AIOKafkaProducer(bootstrap_servers=config.broker_url),
+            consumer=AIOKafkaConsumer(
+                bootstrap_servers=config.broker_url, group_id="chat"
+            ),
         )
 
     container.register(

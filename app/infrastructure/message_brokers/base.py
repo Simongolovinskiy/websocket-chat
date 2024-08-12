@@ -4,7 +4,12 @@ from abc import ABC, abstractmethod
 
 @dataclass
 class BaseMessageBroker(ABC):
-    # consumer: AIOKafkaConsumer
+
+    @abstractmethod
+    async def start(self): ...
+
+    @abstractmethod
+    async def close(self): ...
 
     @abstractmethod
     async def send_message(
@@ -12,4 +17,7 @@ class BaseMessageBroker(ABC):
     ) -> None: ...
 
     @abstractmethod
-    async def receive_message(self, topic: str): ...
+    async def start_consuming(self, topic: str): ...
+
+    @abstractmethod
+    async def stop_consuming(self, topic: str): ...

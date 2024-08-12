@@ -13,7 +13,7 @@ async def start_kafka(retries=5, delay=3):
     message_broker: BaseMessageBroker = container.resolve(BaseMessageBroker)
     for attempt in range(retries):
         try:
-            await message_broker.producer.start()
+            await message_broker.start()
             break
         except KafkaConnectionError as e:
             if attempt < retries - 1:
@@ -25,7 +25,7 @@ async def start_kafka(retries=5, delay=3):
 async def stop_kafka():
     container = init_container()
     message_broker: BaseMessageBroker = container.resolve(BaseMessageBroker)
-    await message_broker.producer.stop()
+    await message_broker.close()
 
 
 @asynccontextmanager
