@@ -1,6 +1,5 @@
 from dataclasses import dataclass, field
 
-import orjson
 from aiokafka.consumer import AIOKafkaConsumer
 from aiokafka.producer import AIOKafkaProducer
 
@@ -19,15 +18,13 @@ class KafkaMessageBroker(BaseMessageBroker):
         await self.producer.send(key=key, topic=topic, value=value)
 
     async def start_consuming(self, topic: str):
-
         self.consumer.subscribe(topics=[topic])
 
-        async for message in self.consumer:
-            yield orjson.loads(message.value)
+    async def consume(self):
+        await self.consumer.getone()
 
     async def stop_consuming(self, topic: str) -> None:
         self.consumer.unsubscribe()
-        await self.consumer.stop()
 
     async def start(self) -> None:
         await self.producer.start()

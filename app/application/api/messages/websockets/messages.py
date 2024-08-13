@@ -23,14 +23,13 @@ async def messages_handlers(
 
     config: Config = container.resolve(Config)
     message_broker: BaseMessageBroker = container.resolve(BaseMessageBroker)
-
-    try:
-        async for consumed_message in message_broker.start_consuming(
-            topic=config.new_message_received_event_topic.format(
-                chat_oid=chat_oid
-            )
-        ):
-            await websocket.send_json(consumed_message)
-    finally:
-        await message_broker.stop_consuming(topic=str(chat_oid))
-        await websocket.close(reason="WebSocket has closed.")
+    await message_broker.start_consuming(
+        topic=config.new_message_received_event_topic.format(chat_oid=chat_oid)
+    )
+    while True:
+        try:
+            await websocket.send_json(await message_broker.consume())
+        finally:
+            break
+    await message_broker.stop_consuming(topic=str(chat_oid))
+    await websocket.close(reason="WebSocket has closed.")
