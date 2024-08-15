@@ -27,7 +27,11 @@ services:
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
     healthcheck:
-      test: nc -z localhost 29092
+      test: [ "CMD", "nc", "-z", "localhost", "29092" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
     networks:
       - backend
 
