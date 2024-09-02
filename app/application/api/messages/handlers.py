@@ -4,20 +4,17 @@ from punq import Container
 
 from app.application.api.messages.filters import GetMessagesFilters
 from app.application.api.messages.schemas import (
+    ChatDetailSchema,
     CreateChatRequestSchema,
     CreateChatResponseSchema,
     CreateMessageRequestSchema,
     CreateMessageResponseSchema,
-    ChatDetailSchema,
     GetMessagesQueryResponseSchema,
     MessageDetailSchema,
 )
 from app.application.api.schemas import ErrorSchema
 from app.domain.exceptions.base import ApplicationException
-from app.services.commands.messages import (
-    CreateChatCommand,
-    CreateMessageCommand,
-)
+from app.services.commands.messages import CreateChatCommand, CreateMessageCommand
 from app.services.init import init_container
 from app.services.mediator.base import Mediator
 from app.services.queries.messages import GetChatDetailQuery, GetMessagesQuery
@@ -42,9 +39,7 @@ async def create_chat_handler(
     """Creating new chat instance."""
     mediator: Mediator = container.resolve(Mediator)
     try:
-        chat, *_ = await mediator.handle_command(
-            CreateChatCommand(title=schema.title)
-        )
+        chat, *_ = await mediator.handle_command(CreateChatCommand(title=schema.title))
     except ApplicationException as e:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -71,9 +66,7 @@ async def create_message_handler(
     """Creating new message instance in existing chat."""
     mediator: Mediator = container.resolve(Mediator)
     try:
-        message, *_ = await mediator.handle_command(
-            CreateMessageCommand(text=schema.text, chat_oid=chat_oid)
-        )
+        message, *_ = await mediator.handle_command(CreateMessageCommand(text=schema.text, chat_oid=chat_oid))
 
     except ApplicationException as exception:
         raise HTTPException(
@@ -97,9 +90,7 @@ async def fetch_chat_with_messages_handler(
 ) -> ChatDetailSchema:
     mediator: Mediator = container.resolve(Mediator)
     try:
-        chat = await mediator.handle_query(
-            GetChatDetailQuery(chat_oid=chat_oid)
-        )
+        chat = await mediator.handle_query(GetChatDetailQuery(chat_oid=chat_oid))
     except ApplicationException as exception:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -126,9 +117,7 @@ async def fetch_chat_messages_handler(
 
     try:
         messages, count = await mediator.handle_query(
-            GetMessagesQuery(
-                chat_oid=chat_oid, filters=filters.to_infrastructure()
-            )
+            GetMessagesQuery(chat_oid=chat_oid, filters=filters.to_infrastructure())
         )
     except ApplicationException as exception:
         raise HTTPException(
@@ -140,7 +129,5 @@ async def fetch_chat_messages_handler(
         count=count,
         limit=filters.limit,
         offset=filters.offset,
-        items=[
-            MessageDetailSchema.from_entity(message) for message in messages
-        ],
+        items=[MessageDetailSchema.from_entity(message) for message in messages],
     )

@@ -10,9 +10,7 @@ from app.domain.events.base import BaseEvent
 @dataclass(eq=False)
 class BaseEntity(ABC):
     oid: str = field(default_factory=lambda: str(uuid4()), kw_only=True)
-    created_at: datetime = field(
-        default_factory=lambda: datetime.now(), kw_only=True
-    )
+    created_at: datetime = field(default_factory=lambda: datetime.now(), kw_only=True)
     _events: List[BaseEvent] = field(default_factory=list, kw_only=True)
 
     def pull_events(self) -> List[BaseEvent]:

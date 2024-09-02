@@ -2,9 +2,7 @@ from fastapi import FastAPI
 
 from app.application.api.lifespan import lifespan
 from app.application.api.messages.handlers import router as message_router
-from app.application.api.messages.websockets.messages import (
-    router as message_ws_router,
-)
+from app.application.api.messages.websockets.messages import router as message_ws_router
 
 
 def create_app() -> FastAPI:

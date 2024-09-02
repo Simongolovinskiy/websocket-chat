@@ -13,7 +13,7 @@
 
 ## Description
 
-Chat based on websocket technology, message in chat 
+Chat based on websocket technology, message in chat
 are translating in Kafka topics, and contains in NoSQL database -
 MongoDB. Based on domain driven design
 concept + clean architecture (example: you can easily change

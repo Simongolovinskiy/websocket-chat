@@ -15,4 +15,5 @@ class EventHandler(ABC, Generic[ET, ER]):
     broker_topic: str | None = None
 
     @abstractmethod
-    def handle(self, event: ET) -> ER: ...
+    def handle(self, event: ET) -> ER:
+        ...

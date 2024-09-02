@@ -5,22 +5,14 @@ from app.domain.entities.messages import Chat
 from app.domain.values.messages import Title
 from app.infrastructure.repositories.messages.base import BaseChatsRepository
 from app.services.commands.messages import CreateChatCommand
-from app.services.exceptions.messages import (
-    ChatWithThatTitleAlreadyExistsException,
-)
+from app.services.exceptions.messages import ChatWithThatTitleAlreadyExistsException
 from app.services.mediator.base import Mediator
 
 
 @pytest.mark.asyncio
-async def test_create_chat_command_success(
-    chat_repository: BaseChatsRepository, mediator: Mediator, faker: Faker
-):
-    chat, *_ = await mediator.handle_command(
-        CreateChatCommand(title=faker.text())
-    )
-    assert await chat_repository.check_chat_exists_by_title(
-        title=chat.title.as_generic_type()
-    )
+async def test_create_chat_command_success(chat_repository: BaseChatsRepository, mediator: Mediator, faker: Faker):
+    chat, *_ = await mediator.handle_command(CreateChatCommand(title=faker.text()))
+    assert await chat_repository.check_chat_exists_by_title(title=chat.title.as_generic_type())
 
 
 @pytest.mark.asyncio

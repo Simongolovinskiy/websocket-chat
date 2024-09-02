@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from typing import TypeVar, Any, Generic
+from typing import Any, Generic, TypeVar
 
 
 @dataclass(frozen=True, eq=False)
@@ -14,6 +14,6 @@ QR = TypeVar("QR", bound=Any)
 
 @dataclass(frozen=True)
 class QueryHandler(ABC, Generic[QT, QR]):
-
     @abstractmethod
-    async def handle(self, query: QT) -> QR: ...
+    async def handle(self, query: QT) -> QR:
+        ...

@@ -1,6 +1,5 @@
 from contextlib import asynccontextmanager
 
-
 from app.infrastructure.message_brokers.base import BaseMessageBroker
 from app.services.init import init_container
 

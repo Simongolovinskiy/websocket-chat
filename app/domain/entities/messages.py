@@ -1,10 +1,7 @@
 from dataclasses import dataclass, field
 
 from app.domain.entities.base import BaseEntity
-from app.domain.events.messages import (
-    NewChatCreatedEvent,
-    NewMessageReceivedEvent,
-)
+from app.domain.events.messages import NewChatCreatedEvent, NewMessageReceivedEvent
 from app.domain.values.messages import Text, Title
 
 

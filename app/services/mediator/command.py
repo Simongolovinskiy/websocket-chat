@@ -8,14 +8,12 @@ from app.services.commands.base import CR, CT, CommandHandler
 
 @dataclass(eq=False)
 class CommandMediator(ABC):
-    commands_map: Dict[CT, CommandHandler] = field(
-        default_factory=lambda: defaultdict(list), kw_only=True
-    )
+    commands_map: Dict[CT, CommandHandler] = field(default_factory=lambda: defaultdict(list), kw_only=True)
 
     @abstractmethod
-    def register_command(
-        self, command: CT, command_handlers: Iterable[CommandHandler[CT, CR]]
-    ) -> None: ...
+    def register_command(self, command: CT, command_handlers: Iterable[CommandHandler[CT, CR]]) -> None:
+        ...
 
     @abstractmethod
-    async def handle_command(self, command: CT) -> Iterable[CR]: ...
+    async def handle_command(self, command: CT) -> Iterable[CR]:
+        ...

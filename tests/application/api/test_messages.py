@@ -5,9 +5,7 @@ from starlette import status
 from starlette.testclient import TestClient
 
 
-def test_route_create_chat_success(
-    app: FastAPI, test_app: TestClient, faker: Faker
-) -> None:
+def test_route_create_chat_success(app: FastAPI, test_app: TestClient, faker: Faker) -> None:
     title = faker.text(max_nb_chars=15)
     url = app.url_path_for("create_chat_handler")
     response: Response = test_app.post(url, json={"title": title})
@@ -16,9 +14,7 @@ def test_route_create_chat_success(
     assert data.get("title") == title
 
 
-def test_route_create_chat_fail(
-    app: FastAPI, test_app: TestClient, faker: Faker
-) -> None:
+def test_route_create_chat_fail(app: FastAPI, test_app: TestClient, faker: Faker) -> None:
     title = faker.text(max_nb_chars=700)
     url = app.url_path_for("create_chat_handler")
     response: Response = test_app.post(url, json={"title": title})

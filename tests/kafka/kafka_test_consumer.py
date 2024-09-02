@@ -1,11 +1,10 @@
-from aiokafka import AIOKafkaConsumer
 import asyncio
+
+from aiokafka import AIOKafkaConsumer
 
 
 async def consume():
-    consumer = AIOKafkaConsumer(
-        "test_topic", bootstrap_servers="kafka:29092", group_id="chat"
-    )
+    consumer = AIOKafkaConsumer("test_topic", bootstrap_servers="kafka:29092", group_id="chat")
     # Get cluster layout and join group `my-group`
     await consumer.start()
     try:

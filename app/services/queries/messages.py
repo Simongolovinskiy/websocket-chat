@@ -3,10 +3,7 @@ from typing import Iterable, Tuple
 
 from app.domain.entities.messages import Chat, Message
 from app.infrastructure.filters.messages import GetMessageFilters
-from app.infrastructure.repositories.messages.base import (
-    BaseChatsRepository,
-    BaseMessagesRepository,
-)
+from app.infrastructure.repositories.messages.base import BaseChatsRepository, BaseMessagesRepository
 from app.services.exceptions.messages import ChatNotFoundException
 from app.services.queries.base import BaseQuery, QueryHandler
 
@@ -39,9 +36,7 @@ class GetChatDetailQueryHandler(QueryHandler):
 class GetMessagesQueryHandler(QueryHandler):
     messages_repository: BaseMessagesRepository
 
-    async def handle(
-        self, query: GetMessagesQuery
-    ) -> Tuple[Iterable[Message], int]:
+    async def handle(self, query: GetMessagesQuery) -> Tuple[Iterable[Message], int]:
         return await self.messages_repository.fetch_messages(
             chat_oid=query.chat_oid,
             filters=query.filters,
